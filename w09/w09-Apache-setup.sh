@@ -7,6 +7,7 @@
 
 #installs httpd utilities and starts inital setup of base config
 dnf install httpd -y
+dnf install mod_ssl -y
 systemctl start httpd.service
 systemctl enable httpd.service
 
@@ -19,16 +20,16 @@ DocumentRoot /var/www/html
 ErrorLog logs/error_log
 LogLevel info
 
-LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
 LoadModule unixd_module modules/mod_unixd.so
 LoadModule systemd_module modules/mod_systemd.so
 LoadModule log_config_module modules/mod_log_config.so
-#Transfer log logs/access_log
+Transferlog logs/access_log
 LoadModule mime_module modules/mod_mime.so
-#TypesConfig /etc/mime.types
+TypesConfig /etc/mime.types
 LoadModule authz_core_module modules/mod_authz_core.so
-#LoadModule dir_module modules/mod_dir.so
-#LoadModule ssl_module modules/mod_ssl.so
+LoadModule dir_module modules/mod_dir.so
+LoadModule ssl_module modules/mod_ssl.so
 
 User apache
 Group apache
@@ -89,8 +90,9 @@ cat > /var/www/vhosts/www.site50.lab/html/index.html <<EOF
 <H1>Host:www.site50.lab [172.16.30.50:80]</H1>
 EOF
 
-cat > /var/www/vhosts/www.example50.lab/html/index.html <<EOF
+cat > /var/www/vhosts/secure.example50.lab/html/index.html <<EOF
 <head><Title>secure.example50.lab</Title></head>
 <H1>Host:secure.example50.lab [172.16.32.50:443]</H1>
 EOF
 
+systemctl restart httpd.service

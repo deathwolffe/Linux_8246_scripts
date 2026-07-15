@@ -8,7 +8,7 @@
 
 #---FIREWALL SETUP---#
 ##Subscript Name: firewall setup
-##Subscript Purpose: allows ip traffic to/from port(s) _____
+##Subscript Purpose: allows ip traffic to/from port(s) 80 and 443
 ##Date Created: 09/07/2026 @ 20:51
 ##Version: 1.0.0
 
@@ -39,7 +39,7 @@ iptables -L
 
 
 #---DNS (Minor) SETUP---#
-##Subscript Name: DNS_setup
+##Subscript Name: DNS setup
 ##Subscript Purpose: builds and configures server as DNS master for example50.lab domain
 ##Date Created: 25/06/2026 @ 01:24
 ##Version: 1.0.1

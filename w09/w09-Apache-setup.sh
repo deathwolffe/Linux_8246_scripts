@@ -1,7 +1,6 @@
 #!/bin/bash
-#---HTTP SETUP---#
-##Subscript Name: HTTP setup
-##Subscript Purpose: 
+##Script Name: w09-Apache-setup.sh
+##Script Purpose: setup and configure httpd
 ##Date Created: 09/07/2026 @ 21:28
 ##Version: 1.0.1
 

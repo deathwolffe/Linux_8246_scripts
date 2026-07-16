@@ -9,7 +9,7 @@
 #---FIREWALL SETUP---#
 ##Subscript Name: firewall setup
 ##Subscript Purpose: allows ip traffic to/from port(s) 25
-##Date Created: 09/07/2026 @ 20:51
+##Date Created: 15/07/2026 @ 14:38
 ##Version: 1.0.1
 
 #stops firewalld so iptables doesn't conflict with it
@@ -24,7 +24,7 @@ echo "SELINUX=disabled" >> /etc/selinux/config
 iptables -F
 
 #allowing traffic on CLIENT network
-iptables -A INPUT -s 172.16.31.0/24 -p tcp --dport @5 -j ACCEPT
+iptables -A INPUT -s 172.16.31.0/24 -p tcp --dport 25 -j ACCEPT
 
 #sallowing traffic on SERVER network
 iptables -A INPUT -s 172.16.30.0/24 -p tcp --dport 25 -j ACCEPT
@@ -39,7 +39,7 @@ iptables -L
 #---DNS (Minor) SETUP---#
 ##Subscript Name: DNS_setup
 ##Subscript Purpose: builds and configures server as DNS master for example50.lab domain
-##Date Created: 25/06/2026 @ 01:24
+##Date Created: 16/07/2026 @ 14:38
 ##Version: 1.0.1
 
 
@@ -96,4 +96,3 @@ sleep 20
 #---VERIFICATION---#
 iptables -L --line-numbers
 dig ns1.example50.lab
-cat /etc/named.conf

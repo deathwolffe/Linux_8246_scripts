@@ -24,15 +24,13 @@ echo "SELINUX=disabled" >> /etc/selinux/config
 iptables -F
 
 #allowing traffic on CLIENT network
-iptables -A INPUT -s 172.16.31.0/24 -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -s 172.16.31.0/24 -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -s 172.16.31.0/24 -p tcp --dport 389 -j ACCEPT
 
 #disallowing traffic on SERVER network
-iptables -A INPUT -s 172.16.30.0/24 -p tcp --dport 80 -j REJECT
-iptables -A INPUT -s 172.16.30.0/24 -p tcp --dport 443 -j REJECT
+iptables -A INPUT -s 172.16.30.0/24 -p tcp --dport 389 -j REJECT
 
-#allowing only secure traffic on ALIAS network
-iptables -A INPUT -s 172.16.32.0/24 -p tcp --dport 80 -j REJECT
+#allowing traffic on ALIAS network
+iptables -A INPUT -s 172.16.32.0/24 -p tcp --dport 389 -j ACCEPT
 
 
 iptables -L
@@ -76,27 +74,6 @@ cat > /etc/named/fwd.example50.lab <<EOF
 ; A Record Definitions
 ns1 IN A 172.16.30.50
 ns2 IN A 172.16.31.50
-ftp IN A 172.16.32.50
-www IN A 172.16.30.50
-secure IN A 172.16.32.50
-
-EOF
-
-cat > /etc/named/fwd.site50.lab <<EOF
-;serial number uses format of revision number + creation date
-\$TTL 86400
-
-@ IN SOA site50.lab root.site50.lab. (
-	002090726 ; Serial
-	28800 ; Refresh (8h)
-	14400 ; Retry (4h)
-	604800 ; Expiry (1w)
-	10800 ; Minimum TTL (3h)
-)
-	IN NS ns1.site50.lab.
-
-ns1 IN A 172.16.30.50
-www IN A 172.16.30.50
 
 EOF
 
@@ -105,13 +82,6 @@ cat <<EOF >> /etc/named.conf
 zone "example50.lab" IN {
         type master;
         file "/etc/named/fwd.example50.lab";
-};
-EOF
-cat <<EOF >> /etc/named.conf
-zone "site50.lab" IN {
-        type master;
-        file "/etc/named/fwd.site50.lab";
-		allow-transfer { 172.16.31.50; };
 };
 EOF
 
